@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-repo/java-app.git'
+                git 'https://github.com/IbnFulan/FirstRepo.git'
             }
         }
 
@@ -19,8 +19,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent(['EC2-SSH-Credentials']) {
-                    sh 'scp target/your-app.jar ubuntu@your-ec2-ip:/path/to/deploy'
-                    sh 'ssh ubuntu@your-ec2-ip "java -jar /path/to/deploy/your-app.jar &"'
+                    sh sh 'scp target/your-app.jar ubuntu@3.235.188.48:/home/ubuntu/deploy'
+                    sh sh 'ssh ubuntu@3.235.188.48 "java -jar /home/ubuntu/deploy/your-app.jar &"'
                 }
             }
         }
