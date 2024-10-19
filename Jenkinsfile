@@ -19,7 +19,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent(['EC2-SSH-Credentials']) {
-                     sh 'scp target/your-app.jar ubuntu@3.235.188.48:/home/ubuntu/deploy'
+                     sh 'scp target/my-app-1.0-SNAPSHOT.jar ubuntu@3.235.188.48:/home/ubuntu/deploy'
                      sh 'ssh ubuntu@3.235.188.48 "java -jar /home/ubuntu/deploy/your-app.jar &"'
                 }
             }
