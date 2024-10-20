@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/FirstRepo.git'  // Update with your actual repo URL
+                git 'https://github.com/IbnFulan/FirstRepo.git'  // Update with your actual repo URL
             }
         }
         stage('Build Docker Image') {
