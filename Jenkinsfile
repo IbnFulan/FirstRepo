@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/IbnFulan/FirstRepo'
+                git branch: 'main', url: 'https://github.com/IbnFulan/FirstRepo'
             }
         }
         stage('Setup Kubeconfig') {
