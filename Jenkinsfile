@@ -1,12 +1,12 @@
 pipeline {
     agent any
     environment {
-        KUBECONFIG = credentials('kubeconfig')  // Add kubeconfig file in Jenkins credentials
+        KUBECONFIG = credentials('kubeconfig')  // Assuming you've added your kubeconfig in Jenkins credentials
     }
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/FirstRepo.git'  // Update with your repo
+                git 'https://github.com/FirstRepo.git'  // Update with your actual repo URL
             }
         }
         stage('Build Docker Image') {
@@ -18,8 +18,8 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
-                script {
-                    sh 'kubectl apply -f k8s-deployment.yaml'
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl apply -f k8s-deployment.yaml'  // Ensure your k8s deployment file is correct
                 }
             }
         }
@@ -33,3 +33,4 @@ pipeline {
         }
     }
 }
+
