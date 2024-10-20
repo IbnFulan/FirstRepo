@@ -1,38 +1,35 @@
 pipeline {
     agent any
-
+    environment {
+        KUBECONFIG = credentials('kubeconfig')  // Add kubeconfig file in Jenkins credentials
+    }
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/IbnFulan/FirstRepo.git'
+                git 'https://github.com/FirstRepo.git'  // Update with your repo
             }
         }
-
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                withMaven(maven: 'Maven 3.6.3') {
-                    sh 'mvn clean install'
+                script {
+                    docker.build("nginx:latest")
                 }
             }
         }
-
-        stage('Deploy') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sshagent(['EC2-SSH-Credentials']) {
-                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.235.188.48 "exit"'
-                     sh 'scp target/my-app-1.0-SNAPSHOT.jar ubuntu@3.235.188.48:/home/ubuntu/deploy'
-                     sh 'ssh ubuntu@3.235.188.48 "java -jar /home/ubuntu/deploy/your-app.jar &"'
+                script {
+                    sh 'kubectl apply -f k8s-deployment.yaml'
                 }
             }
         }
     }
-
     post {
         success {
-            echo 'Deployment successful!'
+            echo 'Deployment Successful!'
         }
         failure {
-            echo 'Deployment failed.'
+            echo 'Deployment Failed'
         }
     }
 }
