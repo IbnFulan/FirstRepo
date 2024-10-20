@@ -1,21 +1,25 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID = credentials('awsaccesskey')
-        AWS_SECRET_ACCESS_KEY = credentials('awssecret')
+        KUBECONFIG = '/var/lib/jenkins/.kube/config'  // Path to your kubeconfig file
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
     }
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/IbnFulan/FirstRepo'
+                git branch: 'main', url: 'https://github.com/IbnFulan/FirstRepo.git'
             }
         }
         stage('Setup Kubeconfig') {
             steps {
                 script {
-                    sh 'mkdir -p ~/.kube'
-                    sh 'cp /var/lib/jenkins/.kube/config ~/.kube/config'
-                    sh 'chmod 600 ~/.kube/config'
+                    sh '''
+                        if [ ! -f /var/lib/jenkins/.kube/config ]; then
+                          mkdir -p /var/lib/jenkins/.kube
+                          cp /path/to/your/kubeconfig /var/lib/jenkins/.kube/config
+                        fi
+                    '''
                 }
             }
         }
@@ -29,7 +33,6 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh 'aws eks update-kubeconfig --region us-east-1 --name my-cluster'
                     sh 'kubectl apply -f k8s-deployment.yaml'
                 }
             }
