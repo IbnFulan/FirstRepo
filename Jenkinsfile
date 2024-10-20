@@ -19,6 +19,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([file(credentialsId: 'Kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh 'aws eks update-kubeconfig --region us-east-1 --name my-cluster'
                     sh 'kubectl apply -f k8s-deployment.yaml'  // Ensure your k8s deployment file is correct
                 }
             }
