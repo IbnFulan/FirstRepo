@@ -2,6 +2,8 @@ pipeline {
     agent any
     environment {
         KUBECONFIG = credentials('Kubeconfig')  // Assuming you've added your kubeconfig in Jenkins credentials
+        AWS_ACCESS_KEY_ID = credentials('awsaccesskey')  // AWS access key from Jenkins credentials
+        AWS_SECRET_ACCESS_KEY = credentials('awssecret')  // AWS secret key from Jenkins credentials
     }
     stages {
         stage('Checkout') {
