@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-service
+spec:
+  type: LoadBalancer  # This will create an external-facing LoadBalancer
+  ports:
+  - port: 80          # The port that the LoadBalancer will expose
+    targetPort: 80    # The port on the container where the app is running
+  selector:
+    app: web-app      # This selector matches the app label from your deployment

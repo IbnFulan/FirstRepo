@@ -1,0 +1,18 @@
+apiVersion: v1
+data:
+  mapUsers: |
+    - userarn: arn:aws:iam::442042540165:user/AWS2024AYSNA
+      username: AWS2024AYSNA
+      groups:
+        - system:masters
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::442042540165:role/eks_nodes-eks-node-group-20241020205026211100000001
+      username: system:node:{{EC2PrivateDNSName}}
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+
